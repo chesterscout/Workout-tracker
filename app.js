@@ -18,15 +18,94 @@ $$('.tab').forEach(b=>b.addEventListener('click',()=>{const n=b.dataset.page;$$(
 
 function k(di,ei){return `${di}-${ei}`}
 function renderDay(){
- const d=days[state.day];$('#dayTitle').textContent=d.title;const list=$('#exerciseList');list.innerHTML='';
+ const d=days[state.day];
+ $('#dayTitle').textContent=d.title;
+ const list=$('#exerciseList');
+ list.innerHTML='';
+
  d.ex.forEach((e,i)=>{
-  const key=k(state.day,i), n=e[2], log=state.draft[key]||{sets:Array.from({length:n},()=>({w:'',r:''})),rir:'2',done:false};
-  while(log.sets.length<n)log.sets.push({w:'',r:''});
-  const card=document.createElement('article');card.className='exercise'+(log.done?' done':'');
+  const key=k(state.day,i);
+  const n=3;
+  const existing=state.draft[key]||{};
+  const log={
+    sets:Array.from({length:n},(_,idx)=>{
+      const prior=(existing.sets||[])[idx]||{};
+      return {w:prior.w??'',r:prior.r??''};
+    }),
+    rir:existing.rir??'2',
+    done:!!existing.done
+  };
+
+  const card=document.createElement('article');
+  card.className='exercise'+(log.done?' done':'');
+
   let rows='';
-  for(let s=0;s<n;s++){const x=log.sets[s]||{w:'',r:''};rows+=`<div class="tiny">Set ${s+1}</div><label class="tiny">Weight<input data-s="${s}" data-f="w" value="${x.w}" type="number" min="0" max="200" step="2.5"></label><label class="tiny">Reps<input data-s="${s}" data-f="r" value="${x.r}" type="number" min="0" max="100"></label><div class="${s===0?'':'hidden'}"><label class="tiny">RIR<select data-f="rir"><option ${log.rir==='0'?'selected':''}>0</option><option ${log.rir==='1'?'selected':''}>1</option><option ${log.rir==='2'?'selected':''}>2</option><option ${log.rir==='3'?'selected':''}>3</option><option ${log.rir==='4+'?'selected':''}>4+</option></select></label></div>`}
-  card.innerHTML=`<div class="row"><div><strong>${i+1}. ${e[0]}</strong><div class="rx">${e[1]} · ${e[2]} sets · ${e[3]} reps · rest ${e[4]}</div></div><label class="check"><input data-f="done" type="checkbox" ${log.done?'checked':''}>Done</label></div><div class="setGrid"><div class="hdr"></div><div class="hdr">Weight</div><div class="hdr">Reps</div><div class="hdr">RIR</div>${rows}</div>`;
-  card.querySelectorAll('input,select').forEach(el=>el.addEventListener('change',()=>{const obj=state.draft[key]||{sets:Array.from({length:n},()=>({w:'',r:''})),rir:'2',done:false};const f=el.dataset.f;if(f==='done')obj.done=el.checked;else if(f==='rir')obj.rir=el.value;else{const si=Number(el.dataset.s);obj.sets[si][f]=safe(el.value,0,f==='w'?200:100)}state.draft[key]=obj;save();renderDay()}));
+  for(let s=0;s<3;s++){
+    const x=log.sets[s];
+    rows+=`
+      <div class="setLabel">Set ${s+1}</div>
+      <label class="tiny">Weight (lb)
+        <input data-s="${s}" data-f="w" value="${x.w}" type="number" min="0" max="200" step="2.5" inputmode="decimal">
+      </label>
+      <label class="tiny">Reps
+        <input data-s="${s}" data-f="r" value="${x.r}" type="number" min="0" max="100" step="1" inputmode="numeric">
+      </label>`;
+  }
+
+  card.innerHTML=`
+    <div class="row">
+      <div>
+        <strong>${i+1}. ${e[0]}</strong>
+        <div class="rx">${e[1]} · 3 sets · ${e[3]} reps · rest ${e[4]}</div>
+      </div>
+      <label class="check">
+        <input data-f="done" type="checkbox" ${log.done?'checked':''}>
+        Done
+      </label>
+    </div>
+
+    <div class="setGrid">
+      <div></div><div class="setHdr">Weight</div><div class="setHdr">Reps</div>
+      ${rows}
+    </div>
+
+    <div class="rirRow">
+      <div class="setLabel">RIR</div>
+      <label class="tiny">Reps in reserve
+        <select data-f="rir">
+          <option ${log.rir==='0'?'selected':''}>0</option>
+          <option ${log.rir==='1'?'selected':''}>1</option>
+          <option ${log.rir==='2'?'selected':''}>2</option>
+          <option ${log.rir==='3'?'selected':''}>3</option>
+          <option ${log.rir==='4+'?'selected':''}>4+</option>
+        </select>
+      </label>
+    </div>`;
+
+  card.querySelectorAll('input,select').forEach(el=>{
+    el.addEventListener('change',()=>{
+      const obj=state.draft[key]||{sets:Array.from({length:3},()=>({w:'',r:''})),rir:'2',done:false};
+      while(obj.sets.length<3)obj.sets.push({w:'',r:''});
+      const f=el.dataset.f;
+
+      if(f==='done'){
+        obj.done=el.checked;
+      }else if(f==='rir'){
+        obj.rir=el.value;
+      }else{
+        const si=Number(el.dataset.s);
+        obj.sets[si][f]=safe(el.value,0,f==='w'?200:100);
+      }
+
+      state.draft[key]=obj;
+      save();
+
+      if(f==='done'){
+        card.classList.toggle('done',obj.done);
+      }
+    });
+  });
+
   list.appendChild(card);
  });
 }
