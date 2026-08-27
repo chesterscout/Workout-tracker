@@ -8,32 +8,54 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <style>
-:root{--bg:#f4f6f8;--card:#fff;--text:#172033;--muted:#6b7280;--border:#d7dce3;--accent:#2563eb;--soft:#eaf2ff;--danger:#991b1b}
-*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--text)}
-main{max-width:860px;margin:auto;padding:14px 12px 42px}h1{font-size:1.42rem;margin:0}h2{font-size:1.08rem;margin:0}h3{font-size:1rem;margin:0}
-.muted{color:var(--muted);font-size:.9rem}.tiny{color:var(--muted);font-size:.78rem}.card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:15px;margin:12px 0}
-.row{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin:12px 0}
-button,input,select{font:inherit}button{min-height:44px;border-radius:12px;border:1px solid var(--border);background:#fff;padding:9px 13px;color:var(--text)}
-button.primary,.tab.active{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:700}.badge{display:inline-block;background:var(--soft);color:var(--accent);border-radius:999px;padding:4px 8px;font-size:.78rem}
-.page{display:none}.page.active{display:block}.exercise{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:14px;margin:10px 0}.exercise.done{outline:2px solid #bbf7d0}
-.rx{font-size:.84rem;color:var(--muted);margin-top:3px}.setGrid{display:grid;grid-template-columns:64px minmax(0,1fr) minmax(0,1fr);gap:8px;align-items:end;margin-top:12px}.setHdr{font-size:.75rem;color:var(--muted);font-weight:600}.setLabel{font-size:.85rem;font-weight:600;align-self:center;padding-bottom:12px}.rirRow{display:grid;grid-template-columns:64px minmax(0,180px);gap:8px;align-items:end;margin-top:10px}.setGrid .hdr{font-size:.75rem;color:var(--muted)}
+:root{--bg:#f4f6f8;--card:#fff;--text:#172033;--muted:#6b7280;--border:#d7dce3;--accent:#2563eb;--soft:#eaf2ff}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--text)}
+main{max-width:860px;margin:auto;padding:14px 12px 42px}
+h1{font-size:1.42rem;margin:0}h2{font-size:1.08rem;margin:0}h3{font-size:1rem;margin:0}
+.muted{color:var(--muted);font-size:.9rem}.tiny{color:var(--muted);font-size:.78rem}
+.card,.exercise{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:15px;margin:12px 0}
+.row{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin:12px 0}
+button,input,select{font:inherit}
+button{min-height:44px;border-radius:12px;border:1px solid var(--border);background:#fff;padding:9px 13px;color:var(--text)}
+button.primary,.tab.active{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:700}
+.badge{display:inline-block;background:var(--soft);color:var(--accent);border-radius:999px;padding:4px 8px;font-size:.78rem}
+.page{display:none}.page.active{display:block}
+.exercise.done{outline:2px solid #bbf7d0}
+.rx{font-size:.84rem;color:var(--muted);margin-top:3px}
+.check{display:flex;align-items:center;gap:7px}.check input{width:22px;height:22px}
 input,select{width:100%;min-height:44px;border:1px solid var(--border);border-radius:11px;background:#fff;padding:8px;color:var(--text);font-size:16px}
-.check{display:flex;align-items:center;gap:7px}.check input{width:22px;height:22px}.progressGrid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:12px}.scroll{overflow-x:auto}
-table{width:100%;border-collapse:collapse;font-size:.84rem}th,td{text-align:left;padding:9px 6px;border-bottom:1px solid var(--border);white-space:nowrap}
-canvas{width:100%;height:260px;background:#fff;border-radius:12px}.chartWrap{position:relative;min-height:270px}.metrics{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;margin-top:10px}
-.metric{border:1px solid var(--border);border-radius:14px;padding:11px;background:#fff}.metric strong{font-size:1.2rem}.strengthControls{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
-.strengthControls button.active{background:var(--soft);border-color:var(--accent);color:var(--accent);font-weight:700}.historyItem{border-top:1px solid var(--border);padding:10px 0}.hidden{display:none!important}
+
+/* Intentionally simple: exactly 3 columns, no responsive column changes. */
+.setTable{display:grid;grid-template-columns:64px minmax(0,1fr) minmax(0,1fr);gap:8px;margin-top:14px;align-items:center}
+.setHead{font-size:.78rem;font-weight:700;color:var(--muted)}
+.setName{font-weight:700;font-size:.9rem}
+.setField label{display:block;font-size:.72rem;color:var(--muted);margin-bottom:4px}
+.rirBox{margin-top:12px;max-width:220px}
+.rirBox label{display:block;font-size:.78rem;color:var(--muted);margin-bottom:4px}
+
+.progressGrid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:12px}
+.scroll{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:.84rem}
+th,td{text-align:left;padding:9px 6px;border-bottom:1px solid var(--border);white-space:nowrap}
+canvas{width:100%;height:260px;background:#fff;border-radius:12px}.chartWrap{position:relative;min-height:270px}
+.metrics{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;margin-top:10px}.metric{border:1px solid var(--border);border-radius:14px;padding:11px;background:#fff}
+.metric strong{font-size:1.2rem}.strengthControls{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.strengthControls button.active{background:var(--soft);border-color:var(--accent);color:var(--accent);font-weight:700}
+.historyItem{border-top:1px solid var(--border);padding:10px 0}.hidden{display:none!important}
 @media(min-width:640px){.progressGrid{grid-template-columns:repeat(4,1fr)}.metrics{grid-template-columns:repeat(4,1fr)}}
 </style>
 </head>
 <body><main>
-<div class="row"><div><h1>Dumbbell Workout Tracker</h1><div class="muted">Version 2 · local data · offline-ready</div></div><span class="badge">Weight = one dumbbell</span></div>
+<div class="row"><div><h1>Dumbbell Workout Tracker</h1><div class="muted">Version 2.3 · local data · offline-ready</div></div><span class="badge">Weight = one dumbbell</span></div>
 <nav class="tabs"><button class="tab active" data-page="workout">Workout</button><button class="tab" data-page="progress">Progress</button><button class="tab" data-page="strength">Strength</button></nav>
 
 <section id="page-workout" class="page active">
-<section class="card"><div class="row"><div><div class="muted">Current workout</div><h2 id="dayTitle"></h2></div><div class="row"><button id="prevDay">Previous</button><button id="nextDay" class="primary">Next day</button></div></div>
+<section class="card">
+<div class="row"><div><div class="muted">Current workout</div><h2 id="dayTitle"></h2></div><div class="row"><button id="prevDay">Previous</button><button id="nextDay" class="primary">Next day</button></div></div>
 <div class="progressGrid"><label class="tiny">Workout date<input id="workoutDate" type="date"></label><label class="tiny">Workout notes<input id="workoutNotes" maxlength="140" placeholder="Optional"></label></div>
-<p class="muted">Most working sets: stop with about 2 good reps left in reserve.</p></section>
+<p class="muted">Most working sets: stop with about 2 good reps left in reserve.</p>
+</section>
 <section id="exerciseList"></section>
 <section class="card"><div class="row"><div><h2>Finish workout</h2><div class="muted">Saves the session to history and feeds the charts.</div></div><button id="saveWorkout" class="primary">Save completed workout</button></div><div id="saveMsg" class="muted" style="margin-top:8px"></div></section>
 <section class="card"><h2>Recent workouts</h2><div id="historyList" class="muted" style="margin-top:6px"></div></section>
@@ -41,20 +63,21 @@ canvas{width:100%;height:260px;background:#fff;border-radius:12px}.chartWrap{pos
 
 <section id="page-progress" class="page">
 <section class="card"><div class="row"><div><h2>Body progress</h2><div class="muted">Weight and waist are charted separately.</div></div><button id="addProgress" class="primary">Add entry</button></div>
-<div class="progressGrid"><label class="tiny">Date<input id="pDate" type="date"></label><label class="tiny">Weight (lb)<input id="pWeight" type="number" min="0" step="0.1"></label><label class="tiny">Waist (in)<input id="pWaist" type="number" min="0" step="0.1"></label><label class="tiny">Notes<input id="pNotes" maxlength="120"></label></div>
-<div id="progressMsg" class="muted" style="margin-top:8px"></div></section>
+<div class="progressGrid"><label class="tiny">Date<input id="pDate" type="date"></label><label class="tiny">Weight (lb)<input id="pWeight" type="number" min="0" step="0.1"></label><label class="tiny">Waist (in)<input id="pWaist" type="number" min="0" step="0.1"></label><label class="tiny">Notes<input id="pNotes" maxlength="120"></label></div><div id="progressMsg" class="muted" style="margin-top:8px"></div></section>
 <section class="card"><h3>Body weight</h3><div class="chartWrap"><canvas id="weightChart"></canvas></div></section>
 <section class="card"><h3>Waist measurement</h3><div class="chartWrap"><canvas id="waistChart"></canvas></div></section>
 <section class="card"><h3>Measurement history</h3><div class="scroll"><table><thead><tr><th>Date</th><th>Weight</th><th>Waist</th><th>Notes</th></tr></thead><tbody id="progressRows"></tbody></table></div></section>
 </section>
 
 <section id="page-strength" class="page">
-<section class="card"><h2>Strength by muscle group</h2><p class="muted">Each exercise is compared only with your own baseline for that exercise. Those normalized changes are combined into a muscle-group index. Baseline = 100.</p>
-<div class="strengthControls" id="muscleButtons"></div><div class="metrics"><div class="metric"><div class="tiny">Current index</div><strong id="currentIndex">—</strong></div><div class="metric"><div class="tiny">Change</div><strong id="indexChange">—</strong></div><div class="metric"><div class="tiny">Workouts tracked</div><strong id="trackedCount">0</strong></div><div class="metric"><div class="tiny">Muscle group</div><strong id="muscleName">Chest</strong></div></div></section>
+<section class="card"><h2>Strength by muscle group</h2><p class="muted">Each exercise is compared with your own baseline for that exercise. Baseline = 100.</p><div class="strengthControls" id="muscleButtons"></div>
+<div class="metrics"><div class="metric"><div class="tiny">Current index</div><strong id="currentIndex">—</strong></div><div class="metric"><div class="tiny">Change</div><strong id="indexChange">—</strong></div><div class="metric"><div class="tiny">Workouts tracked</div><strong id="trackedCount">0</strong></div><div class="metric"><div class="tiny">Muscle group</div><strong id="muscleName">Chest</strong></div></div></section>
 <section class="card"><div class="chartWrap"><canvas id="strengthChart"></canvas></div></section>
-<section class="card"><h3>How the index works</h3><p class="muted">The app takes the strongest logged set for each exercise and estimates strength as weight × (1 + reps ÷ 30). Each exercise is normalized against your first result for that same exercise. The muscle-group score is the average normalized score for exercises from that muscle trained on a date.</p></section>
+<section class="card"><h3>How the index works</h3><p class="muted">The strongest logged set is estimated as weight × (1 + reps ÷ 30). Each exercise is normalized against its first result, then combined by muscle group.</p></section>
 </section>
 
 <section class="card"><div class="row"><div><h2>Data tools</h2><div class="muted">Back up before clearing browser/app data.</div></div><div class="row"><button id="exportData">Export backup</button><input id="importFile" type="file" accept=".json,application/json" class="hidden"><button id="importBtn">Import backup</button><button id="resetAll">Reset all</button></div></div></section>
-<script src="app.js"></script><script>if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js');</script>
+
+<script src="app-v23.js"></script>
+<script>if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js');</script>
 </main></body></html>
